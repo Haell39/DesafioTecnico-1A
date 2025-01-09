@@ -1,81 +1,64 @@
-# Relatório de Resultados - Modelo de Classificação com Árvore de Decisão
+## Análise inicial
 
-## Introdução
-O objetivo foi construir um modelo de classificação para prever se um cliente realizará uma compra, com base em variáveis fornecidas no dataset. Para isso, utilizamos um modelo de Árvore de Decisão. Este relatório apresenta a interpretação dos resultados, as variáveis mais influentes no modelo e sugestões de melhorias.
-
----
-
-## Desempenho do Modelo
-
-### Métricas de Avaliação
-- **Acurácia**: 65%
-- **Matriz de Confusão**:
-
-  |              | Previsto: 0 | Previsto: 1 |
-  |--------------|-------------|-------------|
-  | **Real: 0** |      22     |      2      |
-  | **Real: 1** |      12     |      4      |
-
-- **Relatório de Classificação**:
-
-```
-              precision    recall  f1-score   support
-
-           0       0.65      0.92      0.76        24
-           1       0.67      0.25      0.36        16
-
-    accuracy                           0.65        40
-   macro avg       0.66      0.58      0.56        40
-weighted avg       0.65      0.65      0.60        40
-```
-
-O modelo apresentou um desempenho moderado, com boa precisão para a Classe 0, mas dificuldade em identificar corretamente a Classe 1.
+### **1. Distribuição das Variáveis**
+- **Idade**: A distribuição da idade é aproximadamente uniforme, com um leve aumento na frequência para pessoas próximas a 60 anos.
+- **Renda Anual**: A maioria dos indivíduos está concentrada em faixas de renda específicas (como $30.000, $50.000, $70.000 e $100.000).
+- **Tempo no Site**: A variável apresenta uma distribuição variada, com alguns outliers (valores negativos ou muito baixos) que podem indicar inconsistências nos dados.
+- **Gênero**: O dataset parece equilibrado entre os gêneros masculino e feminino.
+- **Anúncio Clicado**: Há uma divisão clara entre quem clicou e quem não clicou nos anúncios.
+- **Compra (0 ou 1)**: A variável alvo está balanceada, com uma proporção razoável entre compradores e não compradores.
 
 ---
 
-## Importância das Variáveis
+### **2. Relações Entre Variáveis e a Variável Alvo (`Compra`)**
+- **Idade vs Compra**:
+  - Indivíduos mais jovens (18–30 anos) e mais velhos (50–60 anos) têm maior probabilidade de realizar compras.
+  - Faixas intermediárias (30–50 anos) apresentam menor taxa de conversão.
+  
+- **Renda Anual vs Compra**:
+  - Indivíduos com rendas mais altas (próximas a $100.000) têm maior probabilidade de realizar compras.
+  - Pessoas com rendas mais baixas ($30.000) também têm uma taxa significativa de conversão.
 
-A seguir, as variáveis mais relevantes para o modelo:
+- **Tempo no Site vs Compra**:
+  - Indivíduos que passam mais tempo no site (20–30 minutos) tendem a realizar mais compras.
+  - Valores negativos ou muito baixos nesta variável indicam possíveis inconsistências nos dados.
 
-| Variável            | Importância |
-|----------------------|-------------|
-| Tempo_scaled         | 0.40        |
-| Renda_scaled         | 0.30        |
-| Idade_scaled         | 0.20        |
-| Genero_encoded       | 0.06        |
-| Anuncio_encoded      | 0.04        |
-
-A visualização abaixo reflete o impacto de cada variável no modelo:
-
-![Gráfico de Importância das Variáveis](#)
-
-As variáveis **Tempo no Site** e **Renda Anual** foram as mais influentes no modelo, indicando que são bons preditores para a tomada de decisão.
+- **Anúncio Clicado vs Compra**:
+  - Quem clicou em anúncios tem maior probabilidade de realizar uma compra, sugerindo que os anúncios são eficazes para converter usuários.
 
 ---
 
-## Propostas de Melhoria
+### **3. Problemas Identificados nos Dados**
+- Existem valores ausentes em várias colunas, como `Idade`, `Renda Anual`, `Tempo no Site` e `Gênero`.
+- Há inconsistências nos dados:
+  - Valores negativos na coluna `Tempo no Site` são inválidos e precisam ser corrigidos ou removidos.
+  - Registros com valores ausentes devem ser tratados (remoção ou imputação).
 
-1. **Ajuste de Hiperparâmetros**:
-   - Experimentar diferentes valores de `max_depth`, `min_samples_split` e `min_samples_leaf` para reduzir o overfitting ou underfitting.
-   - Realizar validação cruzada para selecionar os melhores parâmetros.
+---
+---
 
-2. **Engenharia de Features**:
-   - Criar novas variáveis derivadas, como interações entre `Renda` e `Tempo no Site`.
-   - Explorar a possibilidade de categorizar a variável `Renda Anual` para identificar grupos mais específicos.
+## Análise e sugestões após o resultado dos modelos 
 
-3. **Coleta de Mais Dados**:
-   - Um dataset maior e mais balanceado pode ajudar a melhorar o desempenho e a generalização do modelo.
 
-4. **Exploração de Outros Modelos**:
-   - Avaliar modelos como Random Forest ou Gradient Boosting, que podem capturar relações mais complexas entre as variáveis.
+### **Conclusões e Recomendações**
+- **Conclusões**:
+  - Usuários com mais tempo no site e renda mais alta têm maior probabilidade de comprar.
+  - Cliques em anúncios estão fortemente correlacionados com compras.
+  - O Random Forest apresentou melhor desempenho geral, mas a árvore de decisão oferece insights claros e interpretáveis.
 
-5. **Normalização Avançada**:
-   - Testar técnicas de normalização diferentes, como `RobustScaler`, para lidar com outliers presentes no dataset.
+- **Recomendações**:
+  - Investir em anúncios direcionados para usuários com perfis de alta renda.
+  - Melhorar a experiência no site para aumentar o tempo de permanência.
+  - Criar campanhas de marketing focadas em faixas etárias intermediárias (25-40 anos).
 
 ---
 
-## Conclusão
-O modelo de Árvore de Decisão apresentou um desempenho moderado, com acurácia de 65%. As variáveis mais influentes foram **Tempo no Site** e **Renda Anual**. As sugestões de melhoria incluem ajustes nos hiperparâmetros, engenharia de features e teste de modelos mais robustos.
+### 6. **Próximos Passos**
+1. Refinar o modelo utilizando otimização de hiperparâmetros.
+2. Realizar análises adicionais para identificar outros padrões de comportamento.
+3. Implementar as recomendações e medir o impacto nas vendas futuras.
 
-Com esses ajustes, espera-se melhorar a precisão e a capacidade preditiva do modelo, tornando-o mais útil para aplicações reais.
+
+---
+
 
